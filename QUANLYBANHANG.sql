@@ -297,7 +297,9 @@ ALTER TABLE CHITIETDATHANG
 --Phương : thêm not nul cho cột ngày sinh của bảng Nhân viên
 ALTER TABLE NHANVIEN  
 	ALTER COLUMN NGAYSINH DATE NOT NULL
-
+-- Huy
+-- Sáng
+-- Công Minh
 
 ------------------------------------------------------------------INSERT----------------------------------------------------------------------------
 -- Thêm dữ liệu bảng quốc gia
