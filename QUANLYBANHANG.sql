@@ -388,3 +388,17 @@ VALUES
 	('MH008', N'Váy đầm nữ', 'CT001', 'LH008', 80, N'Cái', 400.00),  
 	('MH009', N'Tivi LED 50 inches', 'CT003', 'LH009', 20, N'Cái', 12000.00),  
 	('MH010', N'Áo khoác trẻ em', 'CT001', 'LH010', 150, N'Cái', 300.00);
+
+	-- Bảng mặt hàng:
+INSERT INTO MATHANG (MAMATHANG, TENHANG, MACONGTY, MALOAIHANG, SOLUONG, DONVITINH, GIAHANG) 
+VALUES  
+	('MH001', N'Paracetamol 500mg', 'CT001', 'LH001', 150, N'Hộp', 120.00),  
+	('MH002', N'Vitamin C 1000mg', 'CT001', 'LH002', 200, N'Hộp', 85.50),  
+	('MH003', N'Son môi Super Matte', 'CT002', 'LH003', 100, N'Cây', 250.00),  
+	('MH004', N'Salmon tươi', 'CT001', 'LH004', 50, N'Kg', 450.00),  
+	('MH005', N'Nồi cơm điện', 'CT002', 'LH005', 75, N'Cái', 750.00),  
+	('MH006', N'Iphone 13', 'CT003', 'LH006', 30, N'Cái', 30000.00),  
+	('MH007', N'Áo phông nam', 'CT002', 'LH007', 120, N'Cái', 150.00),  
+	('MH008', N'Váy đầm nữ', 'CT001', 'LH008', 80, N'Cái', 400.00),  
+	('MH009', N'Tivi LED 50 inches', 'CT003', 'LH009', 20, N'Cái', 12000.00),  
+	('MH010', N'Áo khoác trẻ em', 'CT001', 'LH010', 150, N'Cái', 300.00);
