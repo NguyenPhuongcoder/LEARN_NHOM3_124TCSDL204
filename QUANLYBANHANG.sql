@@ -382,3 +382,4 @@ VALUES
 	('MH008', N'Váy đầm nữ', 'CT001', 'LH008', 80, N'Cái', 400.00),  
 	('MH009', N'Tivi LED 50 inches', 'CT003', 'LH009', 20, N'Cái', 12000.00),  
 	('MH010', N'Áo khoác trẻ em', 'CT001', 'LH010', 150, N'Cái', 300.00);
+INgsjdhfj
