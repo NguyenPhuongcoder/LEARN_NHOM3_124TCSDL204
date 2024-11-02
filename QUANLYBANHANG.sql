@@ -404,3 +404,30 @@ INSERT INTO NHANVIEN (MANHANVIEN, HON, TEN, NGAYSINH, NGAYLAMVIEC, DIENTHOAI, LU
 	('NV0011', N'Phạm Hữu', N'Hưng', '2000-08-20', '2023-11-05', '0912345688', 9400000, 2100000, N'789 Hoàng Diệu', 'PX0011'),
 	('NV0012', N'Lê Thị', N'Thanh', '2001-12-08', '2023-12-15', '0912345689', 9100000, 2700000, N'321 Bạch Đằng', 'PX0012'),
 	('NV0013', N'Trần Công', N'Khoa', '2002-11-07', '2023-01-10', '0912345690', 8900000, 2200000, N'654 Lê Lai', 'PX0013');
+-- Công Minh
+-- Khách hàng
+INSERT INTO dbo.KHACHHANG(MAKHACHHANG, TENCONGTY, NGUOIDAIDIEN, TENGIAODICH, EMAIL, DIENTHOAI, FAX, SoNhaTenDuong, MaPXNo)
+VALUES('KH00000001', N'CTHH 1TV', N'Nguyễn Công Minh', N'QWETR', 'ncm071205@gmail.com', '0702772847', '22334455', N'Thôn Phú Mỹ', 'PX1'),
+('KH00000002', N'CTHH 1TV A', N'Lê Văn Hùng', N'ASDFG', 'lvh0201@gmail.com', '0702772848', '22334456', N'Thôn Phú Cường', 'PX2'),
+('KH00000003', N'CTHH 1TV B', N'Phạm Thị Mai', N'ZXCVB', 'ptm0201@gmail.com', '0702772849', '22334457', N'Thôn Phú Thọ', 'PX3'),
+('KH00000004', N'CTHH 1TV C', N'Trần Công Tâm', N'QWERQ', 'tct0301@gmail.com', '0702772850', '22334458', N'Thôn Phú Thành', 'PX4'),
+('KH00000005', N'CTHH 1TV D', N'Ngô Bảo Ngọc', N'LKJHG', 'nbn0401@gmail.com', '0702772851', '22334459', N'Thôn Phú Hòa', 'PX5'),
+('KH00000006', N'CTHH 1TV E', N'Đinh Quang Khánh', N'KJHFD', 'dqk0501@gmail.com', '0702772852', '22334460', N'Thôn Phú An', 'PX6'),
+('KH00000007', N'CTHH 1TV F', N'Nguyễn Hồng Phúc', N'MNBVC', 'nhp0601@gmail.com', '0702772853', '22334461', N'Thôn Phú Định', 'PX7'),
+('KH00000008', N'CTHH 1TV G', N'Lý Minh Hoàng', N'GHJKL', 'lmh0701@gmail.com', '0702772854', '22334462', N'Thôn Phú Lợi', 'PX8'),
+('KH00000009', N'CTHH 1TV H', N'Vũ Văn Kiệt', N'ERTYU', 'vvk0801@gmail.com', '0702772855', '22334463', N'Thôn Phú Bình', 'PX9'),
+('KH00000010', N'CTHH 1TV I', N'Tôn Thất Thảo', N'YTREW', 'ttt0901@gmail.com', '0702772856', '22334464', N'Thôn Phú Xuân', 'PX10');
+
+
+-- đơn đặt hàng
+INSERT INTO dbo.DONDATHANG(MAKHACHHANG, MANHANVIEN, NGAYDATHANG, NGAYGIAOHANG, NGAYCHUYENHANG, SoNhaTenDuong, MaPXNo)
+VALUES('KH00000001', 'NV0001', DEFAULT, GETDATE() + 5, GETDATE() + 7, N'Số 1 Đường 1', 'PX1'),('KH00000002', 'NV00000002', DEFAULT, GETDATE() + 6, GETDATE() + 8, N'Số 2 Đường 2', 'PX2'),
+('KH00000003', 'NV0003', DEFAULT, GETDATE() + 4, GETDATE() + 6, N'Số 3 Đường 3', 'PX3'),
+('KH00000004', 'NV0004', DEFAULT, GETDATE() + 5, GETDATE() + 9, N'Số 4 Đường 4', 'PX4'),
+('KH00000005', 'NV0005', DEFAULT, GETDATE() + 7, GETDATE() + 10, N'Số 5 Đường 5', 'PX5'),
+('KH00000006', 'NV0006', DEFAULT, GETDATE() + 5, GETDATE() + 7, N'Số 6 Đường 6', 'PX6'),
+('KH00000007', 'NV0007', DEFAULT, GETDATE() + 8, GETDATE() + 12, N'Số 7 Đường 7', 'PX7'),
+('KH00000008', 'NV0008', DEFAULT, GETDATE() + 6, GETDATE() + 9, N'Số 8 Đường 8', 'PX8'),
+('KH00000009', 'NV0009', DEFAULT, GETDATE() + 3, GETDATE() + 5, N'Số 9 Đường 9', 'PX9'),
+('KH00000010', 'NV0010', DEFAULT, GETDATE() + 4, GETDATE() + 7, N'Số 10 Đường 10', 'PX10')
+
