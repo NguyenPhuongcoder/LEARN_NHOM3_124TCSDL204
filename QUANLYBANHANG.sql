@@ -431,3 +431,67 @@ VALUES('KH00000001', 'NV0001', DEFAULT, GETDATE() + 5, GETDATE() + 7, N'Số 1 �
 ('KH00000009', 'NV0009', DEFAULT, GETDATE() + 3, GETDATE() + 5, N'Số 9 Đường 9', 'PX9'),
 ('KH00000010', 'NV0010', DEFAULT, GETDATE() + 4, GETDATE() + 7, N'Số 10 Đường 10', 'PX10')
 
+--Hữu Sáng
+--Nhà Cung Cấp
+INSERT INTO NHACUNGCAP(MACONGTY,TENCONGTY,TENGIAODICH,DIACHI,DIENTHOAI,FAX,EMAIL)  
+VALUES  
+
+(N'CT001',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658451',525),  
+
+(N'CT002',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658452',525),  
+
+(N'CT003',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658453',525),  
+
+(N'CT004',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658454',525),  
+
+(N'CT005',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658455',525),  
+
+(N'CT006',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658456',525),  
+
+(N'CT007',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658457',525),  
+
+(N'CT008',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658458',525),  
+
+(N'CT009',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658459',525),  
+
+(N'CT0010',N'THIÊN LONG',N'GIAOHANG',N'ĐÀ NẴNG',N'0865658410',525); 
+
+ 
+
+ 
+
+ 
+--Chi tiết đơn HàngHàng
+INSERT INTO CHITIETDATHANG(SOHOADON,MAHANG,GIABAN,SOLUONG,MUCGIAMGIA) 
+VALUES 
+
+('HD001','MH001',1500,100,5), 
+
+('HD002','MH002',2500,100,5), 
+
+('HD003','MH003',3500,100,5), 
+
+('HD004','MH004',4500,100,5), 
+
+('HD005','MH005',5500,100,5), 
+
+('HD006','MH006',6500,100,5), 
+
+('HD007','MH007',7500,100,5), 
+
+('HD008','MH008',7500,100,5), 
+
+('HD009','MH009',8500,100,5), 
+
+('HD010','MH010',9500,100,5); 
+------------------------------------------------------------------UPDATE----------------------------------------------------------------------------
+--Hữu Sáng
+--a,) Cập nhật lại giá trị trường NGAYCHUYENHANG của những bản ghi có NGAYCHUYENHANG chưa xác định (NULL) trong bảng DONDATHANG bằng với giá trị của trường NGAYDATHANG. 
+UPDATE DONDATHANG  
+SET NGAYCHUYENHANG = NGAYDATHANG  
+WHERE NGAYCHUYENHANG IS NULL; 
+
+--b) Tăng số lượng hàng của những mặt hàng do công ty VINAMILK cung cấp lên gấp đôi. 
+UPDATE DONDATHANG  
+SET SOLUONGHANG = SOLUONGHANG * 2  
+WHERE NHACUNGCAP = N’THIÊN LONG’; 
