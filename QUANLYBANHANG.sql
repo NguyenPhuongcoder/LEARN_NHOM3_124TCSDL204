@@ -433,14 +433,14 @@ VALUES
 INSERT INTO NHACUNGCAP(MACONGTY, TENCONGTY, TENGIAODICH, DIENTHOAI, FAX, EMAIL, SONHATENDUONG, MAPXNo)  
 VALUES  
     ('CT0001', N'THIÊN LONG', N'SAIGONMART', N'0865658451', '525525', 'info@saigonmart.vn', N'Thôn Phú Mỹ', 'PX0001'),  
-    ('CT0002', N'THIÊN KIM', N'GIAOHANG', N'0865658452', '325325', 'contact@viettrade.com', N'Thôn Phú Cường', 'PX0002'),  
-    ('CT0003', N'HÒA BÌNH', N'SAIGONMART', N'0865658453', '625625', 'support@bigshop.vn', N'Thôn Phú Thọ', 'PX0003'),  
-    ('CT0004', N'THIÊN LONG', N'VIETTRADE', N'0865658454', '225225', 'sales@giaodich24h.com', N'Thôn Phú Thành', 'PX0004'),  
+    ('CT0002', N'CTHH 1TV A', N'GIAOHANG', N'0865658452', '325325', 'contact@viettrade.com', N'Thôn Phú Cường', 'PX0002'),  
+    ('CT0003', N'MEGASTORE', N'SAIGONMART', N'0865658453', '625625', 'support@bigshop.vn', N'Thôn Phú Thọ', 'PX0003'),  
+    ('CT0004', N'CTHH 1TV E', N'VIETTRADE', N'0865658454', '225225', 'sales@giaodich24h.com', N'Thôn Phú Thành', 'PX0004'),  
     ('CT0005', N'HÒA BÌNH', N'SAIGONMART', N'0865658455', '525525', 'customer@vinatrade.vn', N'Thôn Phú Hòa', 'PX0005'),  
-    ('CT0006', N'THIÊN LONG', N'VIETTRADE', N'0865658456', '125125', 'hello@megastore.vn', N'Thôn Phú An', 'PX0006'),  
-    ('CT0007', N'HÒA BÌNH', N'MEGASTORE', N'0865658457', '525525', 'service@vietmart.com', N'Thôn Phú Định', 'PX0007'),  
-    ('CT0008', N'KIM PHÁT', N'SAIGONMART', N'0865658458', '325325', 'admin@thanhcongtrade.vn', N'Thôn Phú Lợi', 'PX0008'),  
-    ('CT0009', N'THIÊN LONG', N'MEGASTORE', N'0865658459', '525525', 'support@sieuthiso.vn', N'Thôn Phú Bình', 'PX0009'),  
+    ('CT0006', N'CTHH 1TV H', N'VIETTRADE', N'0865658456', '125125', 'hello@megastore.vn', N'Thôn Phú An', 'PX0006'),  
+    ('CT0007', N'CTHH 1TV 3', N'MEGASTORE', N'0865658457', '525525', 'service@vietmart.com', N'Thôn Phú Định', 'PX0007'),  
+    ('CT0008', N'SAIGONMART', N'SAIGONMART', N'0865658458', '325325', 'admin@thanhcongtrade.vn', N'Thôn Phú Lợi', 'PX0008'),  
+    ('CT0009', N'HÒA PHÁT', N'MEGASTORE', N'0865658459', '525525', 'support@sieuthiso.vn', N'Thôn Phú Bình', 'PX0009'),  
     ('CT0010', N'KIM PHÁT', N'SIEUTHISO', N'0865658410', '925925', 'info@daisymart.com', N'Thôn Phú Xuân', 'PX0010'); 
  
  
