@@ -531,7 +531,7 @@ WHERE MANHANVIEN IN (SELECT MANHANVIEN
 					ORDER BY SUM(SOLUONG) DESC))
 
 --Phuong 
---g
+--G
 UPDATE NHANVIEN
 SET LUONGCOBAN = LUONGCOBAN - LUONGCOBAN*0.25
 WHERE MANHANVIEN NOT IN ( SELECT MANHANVIEN
@@ -549,3 +549,55 @@ BEGIN
 END
 
 EXEC dbo.PR_ThongKeSoLuongHangBanRa @maMH='MH0001' -- char(6)
+
+
+--CÂU 1 
+--SÁNG 
+CREATE PROCEDURE dbo.ThemMatHang
+    @MAMATHANG CHAR(6),
+    @TENHANG NVARCHAR(50),
+    @MACONGTY CHAR(6),
+    @MALOAIHANG CHAR(6),
+    @SOLUONG INT,
+    @DONVITINH NVARCHAR(50),
+    @GIAHANG INT
+AS
+BEGIN
+    -- Kiểm tra xem MAMATHANG đã tồn tại chưa (khóa chính không được trùng)
+    IF EXISTS (SELECT 1 FROM MATHANG WHERE MAMATHANG = @MAMATHANG)
+    BEGIN
+        PRINT 'Mã mặt hàng đã tồn tại trong hệ thống.';
+        RETURN; -- Dừng thủ tục nếu mã mặt hàng đã tồn tại
+    END
+
+    -- Kiểm tra tính toàn vẹn tham chiếu: MACONGTY có tồn tại trong bảng NHACUNGCAP không?
+    IF NOT EXISTS (SELECT 1 FROM NHACUNGCAP WHERE MACONGTY = @MACONGTY)
+    BEGIN
+        PRINT 'Mã công ty không hợp lệ.';
+        RETURN; -- Dừng thủ tục nếu mã công ty không hợp lệ
+    END
+
+    -- Kiểm tra tính toàn vẹn tham chiếu: MALOAIHANG có tồn tại trong bảng LOAIHANG không?
+    IF NOT EXISTS (SELECT 1 FROM LOAIHANG WHERE MALOAIHANG = @MALOAIHANG)
+    BEGIN
+        PRINT 'Mã loại hàng không hợp lệ.';
+        RETURN; -- Dừng thủ tục nếu mã loại hàng không hợp lệ
+    END
+
+    -- Nếu không có lỗi, thực hiện thêm bản ghi vào bảng MATHANG
+    INSERT INTO MATHANG (MAMATHANG, TENHANG, MACONGTY, MALOAIHANG, SOLUONG, DONVITINH, GIAHANG)
+    VALUES (@MAMATHANG, @TENHANG, @MACONGTY, @MALOAIHANG, @SOLUONG, @DONVITINH, @GIAHANG);
+
+    PRINT 'Thêm mặt hàng thành công.';
+END;
+
+EXEC dbo.ThemMatHang 
+    @MAMATHANG = 'MH0012', 
+    @TENHANG = 'Máy tính', 
+    @MACONGTY = 'CT0010', 
+    @MALOAIHANG = 'LH0010', 
+    @SOLUONG = 100, 
+    @DONVITINH = 'Cái', 
+    @GIAHANG = 500000;
+
+SELECT *FROM MATHANG
