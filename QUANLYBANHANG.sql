@@ -566,21 +566,21 @@ BEGIN
     -- ktra khoa chinh k dc trung
     IF EXISTS (SELECT 1 FROM MATHANG WHERE MAMATHANG = @MAMATHANG)
     BEGIN
-        PRINT 'Mã mặt hàng đã tồn tại trong hệ thống.';
+        PRINT 'ma mat hang da ton tai.';
         RETURN;
     END
 
     -- kiem tra macc co trong nha cung cap k 
     IF NOT EXISTS (SELECT 1 FROM NHACUNGCAP WHERE MACONGTY = @MACONGTY)
     BEGIN
-        PRINT 'Mã công ty không hợp lệ.';
+        PRINT 'ma cong ty khong hop le.';
         RETURN; 
     END
 
     -- ktra maloaihang co trong loai hang k 
     IF NOT EXISTS (SELECT 1 FROM LOAIHANG WHERE MALOAIHANG = @MALOAIHANG)
     BEGIN
-        PRINT 'Mã loại hàng không hợp lệ.';
+        PRINT 'ma loai hang k hop he ';
         RETURN; 
     END
 
