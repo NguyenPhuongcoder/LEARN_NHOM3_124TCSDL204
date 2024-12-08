@@ -537,4 +537,15 @@ SET LUONGCOBAN = LUONGCOBAN - LUONGCOBAN*0.25
 WHERE MANHANVIEN NOT IN ( SELECT MANHANVIEN
 						  FROM DONDATHANG
 						  WHERE NGAYGIAOHANG BETWEEN '1/1/2023'and '31/12/2023')
-							
+----------------------------------------------------------------------------------------------------------	
+-- Công Minh	
+-- thủ tục 
+CREATE PROC PR_ThongKeSoLuongHangBanRa
+	@maMH CHAR(6)
+AS 
+BEGIN
+	SELECT MAHANG, SUM(SOLUONG) [Tổng số lượng hàng bán ra] 
+	FROM dbo.CHITIETDATHANG WHERE MAHANG = @maMH GROUP BY MAHANG
+END
+
+EXEC dbo.PR_ThongKeSoLuongHangBanRa @maMH='MH0001' -- char(6)
