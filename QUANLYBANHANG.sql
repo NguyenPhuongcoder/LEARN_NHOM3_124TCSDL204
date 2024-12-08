@@ -563,32 +563,32 @@ CREATE PROCEDURE dbo.ThemMatHang
     @GIAHANG INT
 AS
 BEGIN
-    -- Kiểm tra xem MAMATHANG đã tồn tại chưa (khóa chính không được trùng)
+    -- ktra khoa chinh k dc trung
     IF EXISTS (SELECT 1 FROM MATHANG WHERE MAMATHANG = @MAMATHANG)
     BEGIN
         PRINT 'Mã mặt hàng đã tồn tại trong hệ thống.';
-        RETURN; -- Dừng thủ tục nếu mã mặt hàng đã tồn tại
+        RETURN;
     END
 
-    -- Kiểm tra tính toàn vẹn tham chiếu: MACONGTY có tồn tại trong bảng NHACUNGCAP không?
+    -- kiem tra macc co trong nha cung cap k 
     IF NOT EXISTS (SELECT 1 FROM NHACUNGCAP WHERE MACONGTY = @MACONGTY)
     BEGIN
         PRINT 'Mã công ty không hợp lệ.';
-        RETURN; -- Dừng thủ tục nếu mã công ty không hợp lệ
+        RETURN; 
     END
 
-    -- Kiểm tra tính toàn vẹn tham chiếu: MALOAIHANG có tồn tại trong bảng LOAIHANG không?
+    -- ktra maloaihang co trong loai hang k 
     IF NOT EXISTS (SELECT 1 FROM LOAIHANG WHERE MALOAIHANG = @MALOAIHANG)
     BEGIN
         PRINT 'Mã loại hàng không hợp lệ.';
-        RETURN; -- Dừng thủ tục nếu mã loại hàng không hợp lệ
+        RETURN; 
     END
 
-    -- Nếu không có lỗi, thực hiện thêm bản ghi vào bảng MATHANG
+    
     INSERT INTO MATHANG (MAMATHANG, TENHANG, MACONGTY, MALOAIHANG, SOLUONG, DONVITINH, GIAHANG)
     VALUES (@MAMATHANG, @TENHANG, @MACONGTY, @MALOAIHANG, @SOLUONG, @DONVITINH, @GIAHANG);
 
-    PRINT 'Thêm mặt hàng thành công.';
+    PRINT 'Them thanh cong.Ahii ^^';
 END;
 
 EXEC dbo.ThemMatHang 
