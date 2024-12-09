@@ -1,17 +1,17 @@
 -- Kiểm tra xem có data xem đã có hay chưa và xóa, khi ta cần chạy lại tất cả code để tránh sung đột
-IF EXISTS (SELECT * From SYS.DATABASES WHERE NAME = 'Tuan5_Nhom3' )
+IF EXISTS (SELECT * From SYS.DATABASES WHERE NAME = 'Tuan10_Nhom3' )
 BEGIN
 -- su dung database master de xoa database tren
 	use master
 -- dong tat ca cac ket noi den co so, du lieu chuyen sang che do simggle use
-	alter database Tuan5_Nhom3 set single_user with rollback immediate
-	drop database Tuan5_Nhom3;
+	alter database Tuan10_Nhom3 set single_user with rollback immediate
+	drop database Tuan10_Nhom3;
 END
 -- Tạo database
-CREATE DATABASE Tuan5_Nhom3 COLLATE Vietnamese_CI_AS
+CREATE DATABASE Tuan10_Nhom3 COLLATE Vietnamese_CI_AS
 GO
 -- Dùng database
-USE Tuan5_Nhom3
+USE Tuan10_Nhom3
 GO
 ----------------------------------------------------------CREATE, ALTER, CONSTRAINT,-----------------------------------------------------------------
 -- Vì thuộc tính DIACHI vi phạm dạng chuẩn 1NF nên thêm các bảng sau:
@@ -1049,8 +1049,8 @@ BEGIN
     INSERT INTO MATHANG (MAMATHANG, TENHANG, MACONGTY, MALOAIHANG, SOLUONG, DONVITINH, GIAHANG)  
     VALUES (@MAMATHANG, @TENHANG, @MACONGTY, @MALOAIHANG, @SOLUONG, @DONVITINH, @GIAHANG) 
 END  
-GO
-EXEC PR_MATHANG_INSERT   
+--GO
+/*EXEC PR_MATHANG_INSERT   
     @MAMATHANG ='MH0001',  
     @TENHANG = N'Bình nước',  
     @MACONGTY = 'CT0001',  
@@ -1058,23 +1058,33 @@ EXEC PR_MATHANG_INSERT
     @SOLUONG = 3,  
     @DONVITINH = 1,  
     @GIAHANG = 20.00; 
+*/
+
 --2) Tạo thủ tục lưu trữ có chức năng thống kê 
 --tổng số lượng hàng bán được của một mặt hàng có mã bất kỳ (mã mặt hàng cần thống kê là tham số của thủ tục). 
 GO
 CREATE PROC PR_THONGKE_TONGSOLUONGHANGBANDUOC  
     @MAHANG CHAR(6)  
 AS  
-BEGIN  
-    SELECT ISNULL(SUM(SOLUONG), 0) AS "Tổng Số Lượng Bán"  
-    FROM CHITIETDATHANG   
-    WHERE MAHANG = @MAHANG  
+BEGIN 
+	IF NOT EXISTS (SELECT * FROM MATHANG WHERE MAMATHANG = @MAHANG)
+	BEGIN
+		RAISERROR('Mặt hàng này không có trong công ty!', 16, 1);  
+	END
+	ELSE
+	BEGIN
+			SELECT ISNULL(SUM(SOLUONG), 0) AS "Tổng Số Lượng Bán"  
+			FROM CHITIETDATHANG   
+			WHERE MAHANG = @MAHANG  
+	END
 END
 GO
-EXEC dbo.PR_THONGKE_TONGSOLUONGHANGBANDUOC @MAHANG = 'MH0012'
-GO
+--EXEC dbo.PR_THONGKE_TONGSOLUONGHANGBANDUOC @MAHANG = 'MH0007'
+--GO
 SELECT * FROM CHITIETDATHANG
 --3)Viết hàm trả về một bảng trong đó cho biết tổng số lượng hàng bán được của mỗi mặt hàng. 
 --  Sử dụng hàm này để thống kê xem tổng số lượng hàng (hiện có và đã bán) của mỗi mặt hàng là bao nhiêu
+-- Khi đã có trigger
 GO
 CREATE FUNCTION FC_THONGKE_TONGSOHANGHIENCOVADABAN()  
 RETURNS TABLE  
@@ -1094,9 +1104,29 @@ RETURN
         MH.MAMATHANG, MH.TENHANG, MH.SOLUONG  
 )  
 GO
-SELECT *   
-FROM FC_THONGKE_TONGSOHANGHIENCOVADABAN();
+-- Khi chưa có trigger
 GO
+CREATE FUNCTION FC_THONGKE_TONGSOHANGHIENCOVADABAN2()  
+RETURNS TABLE  
+AS  
+RETURN  
+(  
+    SELECT   
+        MH.MAMATHANG,  
+        MH.TENHANG,  
+        COALESCE(SUM(CTDH.SOLUONG), 0) AS "Tổng Số Lượng Bán",  
+        MH.SOLUONG-COALESCE(SUM(CTDH.SOLUONG), 0) AS "Số Lượng Hiện Có"  
+    FROM   
+        MATHANG MH  
+    LEFT JOIN   
+        CHITIETDATHANG CTDH ON MH.MAMATHANG = CTDH.MAHANG  
+    GROUP BY   
+        MH.MAMATHANG, MH.TENHANG, MH.SOLUONG  
+)  
+GO
+--SELECT *   
+--FROM FC_THONGKE_TONGSOHANGHIENCOVADABAN();
+--GO
 
 /*
 4) Viết trigger cho bảng CHITIETDATHANG theo yêu cầu sau: 
@@ -1106,9 +1136,90 @@ Ngược lại thì huỷ bỏ thao tác bổ sung.
 (số lượng hàng bán ra không được vượt quá số lượng hàng hiện có và không được nhỏ hơn 1).
 Nếu dữ liệu hợp lệ thì giảm (hoặc tăng) số lượng hàng hiện có trong công ty, ngược lại thì huỷ bỏ thao tác cập nhật. 
 */
+-- Trigger cho Insert  
+CREATE TRIGGER TG_CTDH_INSERT  
+ON CHITIETDATHANG  
+FOR INSERT   
+AS  
+BEGIN  
+    IF EXISTS (  
+        SELECT 1  
+        FROM inserted i  
+        JOIN MATHANG m ON i.MAHANG = m.MAMATHANG  
+        WHERE i.SOLUONG > m.SOLUONG  
+    )  
+    BEGIN  
+        RAISERROR('SỐ LƯỢNG KHÔNG ĐỦ CUNG CẤP CHO CÁC MẶT HÀNG SAU!', 16, 1);  
+        
+        --  danh sách sản phẩm không đủ số lượng  
+        SELECT DISTINCT i.MAHANG "Mã hàng",m.TENHANG AS "Mặt hàng không đủ số lượng" , i.SOLUONG "Số lượng bán ra", m.SOLUONG "Số lượng hiện tại"
+        FROM inserted i  
+        JOIN MATHANG m ON i.MAHANG = m.MAMATHANG  
+        WHERE i.SOLUONG > m.SOLUONG;   
+		ROLLBACK TRANSACTION; 
+    END  
+    ELSE  
+    BEGIN  
+        UPDATE MATHANG   
+        SET MATHANG.SOLUONG = MATHANG.SOLUONG - i.SOLUONG  
+        FROM inserted i  
+        WHERE MATHANG.MAMATHANG = i.MAHANG;  
+    END  
+END;  
+GO
+-- Trigger cho Update  
+CREATE TRIGGER TG_CTDH_UPDATE  
+ON CHITIETDATHANG  
+FOR UPDATE  
+AS  
+BEGIN  
+    IF EXISTS (  
+        SELECT 1  
+        FROM inserted i  
+        JOIN MATHANG m ON i.MAHANG = m.MAMATHANG  
+        WHERE i.SOLUONG > m.SOLUONG OR i.SOLUONG < 1  
+    )  
+    BEGIN  
+        RAISERROR('SỐ LƯỢNG KHÔNG HỢP LỆ!', 16, 1);
+		SELECT   
+			i.MAHANG AS "Mã hàng",   
+			i.SOLUONG AS "Số lượng yêu cầu",   
+			m.SOLUONG AS "Số lượng hiện tại",  
+			CASE   
+				WHEN i.SOLUONG > m.SOLUONG THEN N'Số lượng lớn hơn số lượng hiện tại'  
+				WHEN i.SOLUONG < 1 THEN N'Số lượng nhỏ hơn 1'  
+				ELSE N'Số lượng không Hợp lệ'  
+			END AS "Lý do không hợp lệ"  
+		FROM inserted i  
+		JOIN MATHANG m ON i.MAHANG = m.MAMATHANG  
+		WHERE i.SOLUONG > m.SOLUONG OR i.SOLUONG < 1;
+        ROLLBACK TRANSACTION; 
+	END  
+    ELSE  
+    BEGIN  
+        UPDATE MATHANG   
+        SET MATHANG.SOLUONG = MATHANG.SOLUONG - (inserted.SOLUONG - deleted.SOLUONG)  
+        FROM inserted  
+        JOIN deleted ON inserted.MAHANG = deleted.MAHANG  
+        WHERE MATHANG.MAMATHANG = inserted.MAHANG;  
+    END  
+END;
+GO
 
-CREATE TRIGGER TG_CTDH_INSERT
-ON 
-AFTER INSERT 
+/*
+-- TEST
+SELECT * FROM CHITIETDATHANG
+SELECT * FROM MATHANG
+
+INSERT INTO CHITIETDATHANG (SOHOADON, MAHANG, GIABAN, SOLUONG, MUCGIAMGIA)  
+VALUES (2, 'MH0011', 10000, 7500, 0),
+	   (10, 'MH0008', 10000, 7500, 0),
+	   (9, 'MH0008', 10000, 7500, 0)
+	   
+UPDATE CHITIETDATHANG  
+SET SOLUONG = 20
+WHERE SOHOADON = 1 AND MAHANG = 'MH0003'  
+*/
+
 
 
